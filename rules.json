@@ -1,0 +1,23 @@
+{
+    "rules": [
+        {"name": "token",
+        "pattern": "",
+        "importance": "",
+        "log": ""},
+
+        {"name": "api-key",
+        "pattern": "",
+        "importance": "",
+        "log": ""},
+
+        {"name": "password",
+        "pattern": "",
+        "importance": "",
+        "log": ""},
+
+        {"name": "phone-number",
+        "pattern": "",
+        "importance": "",
+        "log": ""}
+    ]
+}
