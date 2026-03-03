@@ -1,0 +1,31 @@
+Утечка данных! Строка 3: BASE_URL = "https://api.example.com"
+, файл: app.py. Энтропия: 4.648510460165072
+Утечка данных! Строка 6:     response = os.get(f"{BASE_URL}/users/{user_id}")
+, файл: app.py. Энтропия: 4.569730303898027
+Утечка данных! Строка 4: MIIEvQIBADANBgkqhkiG9w0BAQEFAASC...
+, файл: auth-service.py. Энтропия: 4.284527696416556
+Утечка данных! Строка 5: U29tZVN1cGVyU2VjcmV0S2V5Q29udGVudA==
+, файл: auth-service.py. Энтропия: 4.195675662809303
+Утечка данных! Строка 9:     return hashlib.sha256(password.encode()).hexdigest()
+, файл: auth-service.py. Энтропия: 4.440640076685948
+Утечка данных! Строка 13:     if token == "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9":
+, файл: auth-service.py. Энтропия: 4.798475756730228
+Утечка данных! Строка 3: API_KEY = "sk_live_9fH2kLmN8pQxR3tUvW7z"
+, файл: config.py. Энтропия: 5.046457187492146
+Утечка данных! Строка 4: SECRET_TOKEN = "ghp_91kslD8fJd93KslmPqweRty12345"
+, файл: config.py. Энтропия: 5.108758439731455
+Утечка данных! Строка 7: DATABASE_PASSWORD = "admin123", файл: config.py. Энтропия: 4.2817276788697365
+Утечка данных! Строка 3: os.environ["AWS_SECRET_ACCESS_KEY"] = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+, файл: env_loader.py. Энтропия: 5.141595064292506
+Утечка данных! Строка 4: os.environ["STRIPE_SECRET"] = "sk_test_51N9d8FhZkLmNoPqR"
+, файл: env_loader.py. Энтропия: 4.999801038044515
+Утечка данных! Строка 6: SERVICE_ACCOUNT_EMAIL = "service-account@myproject.iam.gserviceaccount.com", файл: env_loader.py. Энтропия: 4.90016881727262
+Утечка данных! Строка 2:     def __init__(self, name, email, passport):
+, файл: users.py. Энтропия: 4.043534596174363
+Утечка данных! Строка 11:         email="ivan.petrov1999@example.com",
+, файл: users.py. Энтропия: 4.152638373963222
+Утечка данных! Строка 4: def generate_id(length=8):
+, файл: utils.py. Энтропия: 4.028604521628772
+Утечка данных! Строка 5:     return ''.join(random.choice(string.ascii_letters) for _ in range(length))
+, файл: utils.py. Энтропия: 4.281683318809733
+Утечка данных! Строка 9:     print(f"[LOG] {message}"), файл: utils.py. Энтропия: 4.250752013250441

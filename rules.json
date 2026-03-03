@@ -2,22 +2,32 @@
     "rules": [
         {"name": "token",
         "pattern": "",
-        "importance": "",
+        "importance": "HIGH",
         "log": ""},
 
         {"name": "api-key",
         "pattern": "",
-        "importance": "",
+        "importance": "HIGH",
         "log": ""},
 
         {"name": "password",
         "pattern": "",
-        "importance": "",
+        "importance": "MEDIUM",
         "log": ""},
 
         {"name": "phone-number",
         "pattern": "",
-        "importance": "",
+        "importance": "LOW",
+        "log": ""},
+
+        {"name": "email",
+        "pattern": "",
+        "importance": "LOW",
+        "log": ""},
+
+        {"name": "passport",
+        "pattern": "",
+        "importance": "MEDIUM",
         "log": ""}
     ]
 }
