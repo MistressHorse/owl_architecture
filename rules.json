@@ -1,7 +1,7 @@
 {
     "rules": [
         {"name": "bearer-like-token",
-        "pattern": "eyJ[a-zA-Z0-9_-]{10,}\\.[a-zA-Z0-9_-]+\\.[a-zA-Z0-9_-]+",
+        "pattern": "eyJ[a-zA-Z0-9_-]{10,}",
         "importance": "HIGH",
         "log": "Bearer-token was found!"},
 
