@@ -1,33 +1,43 @@
 {
     "rules": [
-        {"name": "token",
-        "pattern": "",
+        {"name": "bearer-like-token",
+        "pattern": "eyJ[a-zA-Z0-9_-]{10,}\\.[a-zA-Z0-9_-]+\\.[a-zA-Z0-9_-]+",
         "importance": "HIGH",
-        "log": ""},
+        "log": "Bearer-token was found!"},
 
-        {"name": "api-key",
-        "pattern": "",
+        {"name": "aws-key-id",
+        "pattern": "AKIA[0-9A-Z]{16}",
         "importance": "HIGH",
-        "log": ""},
+        "log": "AWS Access Key ID was found!"},
 
-        {"name": "password",
-        "pattern": "",
-        "importance": "MEDIUM",
-        "log": ""},
+        {"name": "stripe-secret-key",
+        "pattern": "sk_(live|test)_[0-9a-zA-Z]{24,}",
+        "importance": "HIGH",
+        "log": "Stripe Secret Key was found!"},
+
+        {"name": "google-api-key",
+        "pattern": "AIza[0-9A-Za-z\\-_]{35}",
+        "importance": "HIGH",
+        "log": "Google API Key was found!"},
+
+        {"name": "github-token",
+        "pattern": "ghp_[0-9a-zA-Z]{36}",
+        "importance": "HIGH",
+        "log": "Github-token was found!"},
 
         {"name": "phone-number",
-        "pattern": "",
+        "pattern": "\\+7[0-9]{10}",
         "importance": "LOW",
-        "log": ""},
+        "log": "Phone number was found!"},
 
         {"name": "email",
-        "pattern": "",
+        "pattern": "[\\w.-]+@[\\w.-]+\\.\\w+",
         "importance": "LOW",
-        "log": ""},
+        "log": "Email was found!"},
 
         {"name": "passport",
-        "pattern": "",
+        "pattern": "\\b\\d{4}\\s?\\d{6}\\b",
         "importance": "MEDIUM",
-        "log": ""}
+        "log": "Russian passport was found!"}
     ]
 }
