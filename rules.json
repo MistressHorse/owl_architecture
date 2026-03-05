@@ -21,7 +21,7 @@
         "log": "Google API Key was found!"},
 
         {"name": "github-token",
-        "pattern": "ghp_[0-9a-zA-Z]{36}",
+        "pattern": "gh[pousr]_[0-9a-zA-Z]{36}",
         "importance": "HIGH",
         "log": "Github-token was found!"},
 
