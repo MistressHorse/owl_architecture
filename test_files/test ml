@@ -1,4 +1,4 @@
-```bash
+
 import os
 import re
 import json
@@ -235,4 +235,4 @@ if __name__ == "__main__":
         sys.exit(1)
 
     generate_report(all_findings, 'text')
-```
+
