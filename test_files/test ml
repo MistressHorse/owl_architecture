@@ -1,0 +1,238 @@
+```bash
+import os
+import re
+import json
+import math
+import sys
+from collections import Counter
+import joblib
+
+
+# Эта часть нужна для подключения ML
+model = None
+try:
+    model = joblib.load('password_model.pkl')
+    print("Модель для паролей загружена")
+except:
+    print("Модель не найдена. Строки с паролями не будут обрабатываться ML.")
+
+# Функция энтропии
+def entropy(s):
+    if not s or len(s) < 8:
+        return 0.0
+    freq = Counter(s)
+    probs = [freq[char] / len(s) for char in freq]
+    return -sum(p * math.log2(p) for p in probs)
+
+# Извлечение признаков для ML
+def extract_features(line):
+    line = line.strip()
+    features = []
+    features.append(len(line))
+    features.append(entropy(line))
+    upper = sum(1 for c in line if c.isupper())
+    features.append(upper / max(1, len(line)))
+    lower = sum(1 for c in line if c.islower())
+    features.append(lower / max(1, len(line)))
+    digit = sum(1 for c in line if c.isdigit())
+    features.append(digit / max(1, len(line)))
+    special = len(line) - upper - lower - digit
+    features.append(special / max(1, len(line)))
+    features.append(len(set(line)))
+    features.append(1 if line and line[0] in '\'"' and line[-1] in '\'"' else 0)
+    features.append(1 if '=' in line else 0)
+    features.append(1 if ':' in line else 0)
+    features.append(1 if line.startswith(('#', '//')) else 0)
+    features.append(1 if re.search(r'\bpass\b', line.lower()) else 0)
+    features.append(1 if re.search(r'\bpassword\b', line.lower()) else 0)
+    features.append(1 if re.search(r'\blogin\b', line.lower()) else 0)
+    features.append(1 if re.search(r'\buser\b', line.lower()) else 0)
+    return features
+
+# Правила поиска
+RULES = [
+    ("AWS Access Key ID", r"AKIA[0-9A-Z]{16}", "high", 3.5),
+    ("AWS Secret Key", r"[0-9a-zA-Z/+]{40}", "high", 4.0),
+    ("GitHub Token", r"ghp_[0-9a-zA-Z]{36}", "high", 4.0),
+    ("Private Key", r"-----BEGIN (RSA|DSA|EC) PRIVATE KEY-----", "high", 0.0),
+    ("Generic API Key", r"api[_-]?key\s*=\s*['\"][0-9a-zA-Z]{16,45}['\"]", "medium", 3.5),
+    ("Long random string", r"[A-Za-z0-9@#$%^&+=\-]{30,}", "medium", 4.0),
+]
+
+STOP_WORDS = ['test', 'example', 'dummy', 'fake', 'todo', 'xxxx', 'foobar', 'abc123']
+SEVERITY_LEVEL = {"high": 3, "medium": 2, "low": 1}
+
+def is_likely_false_positive(line, min_entropy=0.0):
+    line_lower = line.lower()
+    for word in STOP_WORDS:
+        if word in line_lower:
+            return True
+    if min_entropy > 0 and entropy(line) < min_entropy:
+        return True
+    return False
+
+def scan_file(filepath, model=None):
+    findings = []
+    try:
+        with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
+            for i, line in enumerate(f, start=1):
+                line_stripped = line.strip()
+                if not line_stripped:
+                    continue
+
+                # Сначала обрабатка всеx правил, кроме парольных (пароли обрабатываются через ML)
+                rule_match = None
+                for rule_name, pattern, severity, min_entropy in RULES:
+                    if re.search(pattern, line):
+                        if not is_likely_false_positive(line, min_entropy):
+                            rule_match = (rule_name, это mlseverity)
+                            break
+
+                if rule_match:
+                    findings.append({
+                        "file": filepath,
+                        "line": i,
+                        "match": line_stripped,
+                        "type": rule_match[0],
+                        "severity": rule_match[1],
+                        "entropy": entropy(line_stripped)
+                    })
+                    continue
+
+              # это ml
+                if model is not None:
+                    lower_line = line.lower()
+                    if any(kw in lower_line for kw in ['pass', 'pwd', 'login', 'user']):
+                        features = extract_features(line_stripped)
+                        prob = model.predict_proba([features])[0][1]
+                        if prob > 0.8:  # порог уверенности ml
+                            rule_type = "Hardcoded Password" if ('pass' in lower_line or 'pwd' in lower_line) else "Hardcoded Login"
+                            severity = "high" if 'pass' in lower_line else "medium"
+                            findings.append({
+                                "file": filepath,
+                                "line": i,
+                                "match": line_stripped,
+                                "type": rule_type,
+                                "severity": severity,
+                                "entropy": entropy(line_stripped),
+                                "ml_probability": prob
+                            })
+    except Exception:
+        pass
+    return findings
+
+def scan_directory(root_path, model=None):
+    all_findings = []
+    for dirpath, dirnames, filenames in os.walk(root_path):
+        dirnames[:] = [d for d in dirnames if d not in ['.git', '__pycache__', 'venv', 'node_modules']]
+        for filename in filenames:
+            filepath = os.path.join(dirpath, filename)
+            all_findings.extend(scan_file(filepath, model))
+    return all_findings
+
+def scan_git_history(repo_path, model=None):
+    findings = []
+    if not GIT_AVAILABLE:
+        print("Предупреждение: GitPython не установлен. Сканирование истории Git пропущено.")
+        return findings
+
+    try:
+        repo = Repo(repo_path)
+    except Exception as e:
+        print(f"Не удалось открыть репозиторий Git: {e}")
+        return findings
+
+    commits = list(repo.iter_commits('HEAD'))
+    print(f"Найдено коммитов: {len(commits)}. Начинаем сканирование истории...")
+
+    for commit in commits:
+        for file_path in commit.stats.files.keys():
+            try:
+                blob = commit.tree / file_path
+                content = blob.data_stream.read().decode('utf-8', errors='ignore')
+            except (KeyError, UnicodeDecodeError):
+                continue
+
+            lines = content.splitlines()
+            for i, line in enumerate(lines, start=1):
+                best_rule = None
+                best_severity = 0
+                best_type = None
+                for rule_name, pattern, severity, min_entropy in RULES:
+                    if re.search(pattern, line) and not is_likely_false_positive(line, min_entropy):
+                        cur_sev = SEVERITY_LEVEL.get(severity, 0)
+                        if cur_sev > best_severity:
+                            best_severity = cur_sev
+                            best_rule = rule_name
+                            best_type = severity
+                if best_rule:
+                    findings.append({
+                        "commit": commit.hexsha[:8],
+                        "author": str(commit.author),
+                        "date": commit.committed_datetime.isoformat(),
+                        "file": file_path,
+                        "line": i,
+                        "match": line.strip(),
+                        "type": best_rule,
+                        "severity": best_type,
+                        "entropy": entropy(line)
+                    })
+    return findings
+
+def generate_report(findings, output_format='text'):
+    severity_map = {"high": 3, "medium": 2, "low": 1}
+    findings.sort(key=lambda x: (-severity_map.get(x['severity'], 0), x['file'], x['line']))
+
+    if output_format == 'json':
+        with open('secrets_report.json', 'w', encoding='utf-8') as f:
+            json.dump(findings, f, indent=2, ensure_ascii=False)
+        print("Отчёт сохранён в secrets_report.json")
+    elif output_format == 'text':
+        with open('secrets_report.txt', 'w', encoding='utf-8') as f:
+            current_file = None
+            for item in findings:
+                if item['file'] != current_file:
+                    current_file = item['file']
+                    f.write(f"\n--- {current_file} ---\n")
+                if 'commit' in item:
+                    f.write(f"[{item['commit']}] {item['author']} ({item['date']})\n")
+                f.write(f"  строка {item['line']} [{item['severity']}] {item['type']}\n")
+                f.write(f"    {item['match']}\n")
+                if 'entropy' in item:
+                    f.write(f"    (энтропия: {item['entropy']:.2f})\n")
+                if 'ml_probability' in item:
+                    f.write(f"    (ML уверенность: {item['ml_probability']:.2f})\n")
+                f.write("\n")
+        print("Отчёт сохранён в secrets_report.txt")
+
+    print(f"Всего найдено утечек: {len(findings)}")
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Использование: python scanner.py <путь> [--git]")
+        print("  <путь> - файл или папка для сканирования")
+        print("  --git  - дополнительно сканировать Git-историю")
+        sys.exit(1)
+
+    target = sys.argv[1]
+    scan_git_flag = '--git' in sys.argv
+
+    all_findings = []
+
+    if os.path.isfile(target):
+        print(f"Сканирование файла: {target}")
+        all_findings = scan_file(target, model)
+    elif os.path.isdir(target):
+        print(f"Сканирование папки: {target}")
+        all_findings = scan_directory(target, model)
+        if scan_git_flag:
+            print("Сканирование Git-истории...")
+            git_findings = scan_git_history(target, model)
+            print(f"Найдено утечек в истории: {len(git_findings)}")
+            all_findings.extend(git_findings)
+    else:
+        print(f"Ошибка: путь '{target}' не существует")
+        sys.exit(1)
+
+    generate_report(all_findings, 'text')
+```
