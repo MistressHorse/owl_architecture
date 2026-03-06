@@ -4,20 +4,20 @@ import sys
 from pathlib import Path
 
 words = [
-    (r'(?i)\bpassword\b', 'Password'),
-    (r'(?i)\bpasswd\b', 'Password'),
-    (r'(?i)\bpwd\b', 'Password'),
-    (r'(?i)\blogin\b', 'Login'),
-    (r'(?i)\buser\b', 'Username'),
-    (r'(?i)\busername\b', 'Username'),
-    (r'(?i)\btoken\b', 'Token'),
-    (r'(?i)\baws_key\b', 'AWS_Key'),
-    (r'(?i)\baws key\b', 'AWS Key'),
-    (r'(?i)\bkey\b', 'Key'),
-    (r'(?i)\baws secret\b', 'AWS Secret'),
-    (r'(?i)\bsecret\b', 'Secret'),
-    (r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', 'Email'),
-    (r'\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b', 'IP'), # IPv4
+    (r'(?i)\bpassword\b', 'Password', 'medium'),
+    (r'(?i)\bpasswd\b', 'Password', 'medium'),
+    (r'(?i)\bpwd\b', 'Password', 'medium'),
+    (r'(?i)\blogin\b', 'Login', 'low'),
+    (r'(?i)\buser\b', 'Username', 'low'),
+    (r'(?i)\busername\b', 'Username', 'low'),
+    (r'(?i)\btoken\b', 'Token', 'high'),
+    (r'(?i)\baws_key\b', 'AWS_Key', 'high'),
+    (r'(?i)\baws key\b', 'AWS Key', 'high'),
+    (r'(?i)\bkey\b', 'Key', 'high'),
+    (r'(?i)\baws secret\b', 'AWS Secret', 'high'),
+    (r'(?i)\bsecret\b', 'Secret', 'high'),
+    (r'(?i)\bemail\b', 'email', 'low'),
+    (r'(?i)\bip\b', 'ip', 'low'),
 ]
 
 # Функция для фильтрации заведомо ложных срабатываний 
