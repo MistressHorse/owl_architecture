@@ -16,6 +16,8 @@ words = [
     (r'(?i)\bkey\b', 'Key'),
     (r'(?i)\baws secret\b', 'AWS Secret'),
     (r'(?i)\bsecret\b', 'Secret'),
+    (r'(?i)\bemail\b', 'email'),
+    (r'(?i)\bip\b', 'ip'),
     (r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', 'Email'),
     (r'\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b', 'IP'), # IPv4
 ]
