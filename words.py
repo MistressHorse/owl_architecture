@@ -1,10 +1,4 @@
-#Рабочий скан файла по ключевым словам с генерацией отчета.
-
-import os
 import re
-import sys
-from pathlib import Path
-
 words = [
     (r'(?i)\bpassword\b', 'Password', 'medium'),
     (r'(?i)\bpasswd\b', 'Password', 'medium'),
@@ -22,73 +16,22 @@ words = [
     (r'(?i)\bip\b', 'ip', 'low'),
 ]
 
-# Функция для фильтрации заведомо ложных срабатываний 
 def is_likely_false_positive(line):
-    if line.lstrip().startswith(('if', 'elif', 'else', 'import')):
-        return True
-    return False
-    
-def scan_file(filepath):
-    findings = []
-    try:
-        with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
-            for i, line in enumerate(f, 1):
-                line_stripped = line.rstrip('\n')
-                if not line_stripped:
-                    continue
-                if is_likely_false_positive(line_stripped):
-                    continue
-                for pattern, leak_type, severity in words:
-                    if re.search(pattern, line_stripped):
-                        findings.append({
-                            'file': str(filepath),
-                            'line': i,
-                            'match': line_stripped,
-                            'type': leak_type,
-                            'severity': severity
-                        })
-                        break  
-    except Exception:
-        pass
-    return findings
-    
-def generate_report(findings, output_file='secrets_report.txt'):
-    severity_order = {'high': 3, 'medium': 2, 'low': 1}
-    findings.sort(key=lambda x: (-severity_order.get(x['severity'], 0), x['file'], x['line']))
+    return line.lstrip().startswith(('if', 'elif', 'else', 'import'))
 
-    with open(output_file, 'w', encoding='utf-8') as f:
-        current_file = None
-        for item in findings:
-            if item['file'] != current_file:
-                current_file = item['file']
-                f.write(f"\n--- {current_file} ---\n")
-            f.write(f"  строка {item['line']} [{item['severity']}] {item['type']}\n")
-            f.write(f"    {item['match']}\n\n")
-    print(f"Отчёт сохранён в {output_file}. Найдено утечек: {len(findings)}")
+class LeakResult:
+    def __init__(self, skip, leak_type=None, severity=None):
+        self.skip = skip
+        self.leak_type = leak_type
+        self.severity = severity
 
+def analyze_line(line):
+    line_stripped = line.rstrip('\n')
+    if not line_stripped or is_likely_false_positive(line_stripped):
+        return LeakResult(skip=True)
 
-def scan_directory(root_path, model=None):
-    all_findings = []
-    for dirpath, dirnames, filenames in os.walk(root_path):
-        dirnames[:] = [d for d in dirnames if d not in ['.git', '__pycache__', 'venv', 'node_modules']]
-        for filename in filenames:
-            filepath = os.path.join(dirpath, filename)
-            all_findings.extend(scan_file(filepath))
-    return all_findings
+    for pattern, leak_type, severity in words:
+        if re.search(pattern, line_stripped):
+            return LeakResult(skip=False, leak_type=leak_type, severity=severity)
 
-
-if __name__ == '__main__':
-    if len(sys.argv) < 2:
-        print("Использование: python scanner.py <путь_к_папке_или_файлу>")
-        sys.exit(1)
-
-    target = sys.argv[1]
-    if os.path.isfile(target):
-        findings = scan_file(target)
-    elif os.path.isdir(target):
-        findings = scan_directory(target)
-    else:
-        print("Указанный путь не существует")
-        sys.exit(1)
-
-    generate_report(findings)
+    return LeakResult(skip=True)
