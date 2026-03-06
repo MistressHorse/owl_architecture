@@ -14,6 +14,6 @@ KEYWORDS = [
 
 # Функция для фильтрации заведомо ложных срабатываний 
 def is_likely_false_positive(line):
-    if line.lstrip().startswith(('if', 'elif', 'else')):
+    if line.lstrip().startswith(('if', 'elif', 'else', 'import')):
         return True
     return False
