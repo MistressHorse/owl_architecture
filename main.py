@@ -5,17 +5,12 @@ import re
 import json
 
 def logging(filename, num, line, type, imp, ent, method):
-    # with open('./audit.log', 'a', encoding='utf-8') as log_file:
-    #     if imp != None:
-    #         log_file.write(f'{log} Строка: {line}, файл: {filename}. Уровень критичности: {imp}\n\n')
-    #     else:
-    #         log_file.write(f'Утечка данных! Строка {k}: {line}, файл: {filename}. Энтропия: {ent}\n')
-    compilation(filename, num, line, type, imp, ent, f'./{method}_audit.json')
+    par_to_json(filename, num, line, type, imp, ent, f'./{method}_audit.json')
 
 def make_key(obj):
     return (obj['filename'], obj['num'])
 
-def compilation(filename, num, line, type, imp, ent, json_path):
+def par_to_json(filename, num, line, type, imp, ent, json_path):
     finding = {
         "filename": filename,
         "num": num,
@@ -33,7 +28,7 @@ def compilation(filename, num, line, type, imp, ent, json_path):
     else:
         data = []
     data.append(finding)
-    with open('output.json','w',encoding='utf-8') as f:
+    with open(json_path,'w',encoding='utf-8') as f:
         f.dump(data, f, indent=4, ensure_ascii=False)
 
 #precise - entropy+regex, kwd+regex, kwd+regex+entropy
@@ -60,7 +55,7 @@ def precise_mode(r_file, k_file, e_file):
                 merged = {**i, **k_dict(key)}
                 merged['conf'] = 'HIGH'
             result.append(merged)
-    with open('result.json', 'w', encoding='utf-8') as f:
+    with open('precise_audit_result.json', 'w', encoding='utf-8') as f:
         json.dump(result, f, ensure_ascii=False, indent=4)
     
 
@@ -87,3 +82,5 @@ def search_leaks(direct, method):
 if __name__ == '__main__':
     direct = str(input('Введите директорию, в которой будет осуществляться поиск: '))
     search_leaks(direct, 'regex')
+    search_leaks(direct, 'entropia')
+    search_leaks(direct, 'keywords')
