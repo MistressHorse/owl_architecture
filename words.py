@@ -3,7 +3,7 @@ import re
 import sys
 from pathlib import Path
 
-KEYWORDS = [
+words = [
     (r'(?i)\bpassword\b', 'Password'),
     (r'(?i)\bpasswd\b', 'Password'),
     (r'(?i)\bpwd\b', 'Password'),
