@@ -66,6 +66,17 @@ def generate_report(findings, output_file='secrets_report.txt'):
             f.write(f"    {item['match']}\n\n")
     print(f"Отчёт сохранён в {output_file}. Найдено утечек: {len(findings)}")
 
+
+def scan_directory(root_path, model=None):
+    all_findings = []
+    for dirpath, dirnames, filenames in os.walk(root_path):
+        dirnames[:] = [d for d in dirnames if d not in ['.git', '__pycache__', 'venv', 'node_modules']]
+        for filename in filenames:
+            filepath = os.path.join(dirpath, filename)
+            all_findings.extend(scan_file(filepath))
+    return all_findings
+
+
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         print("Использование: python scanner.py <путь_к_папке_или_файлу>")
