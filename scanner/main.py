@@ -1,6 +1,6 @@
-from regex import *
-from entropia import *
-from words import *
+from scanner.regex import *
+from scanner.entropia import *
+from scanner.words import *
 import os
 import re
 import json
