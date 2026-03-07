@@ -6,7 +6,10 @@
         "type": null,
         "imp": null,
         "ent": 4.90016881727262,
-        "match": "entropy+regex"
+        "match": [
+            "entropy",
+            "regex"
+        ]
     },
     {
         "filename": "users.py",
@@ -15,7 +18,10 @@
         "type": "email",
         "imp": "low",
         "ent": null,
-        "match": "keywords+entropy"
+        "match": [
+            "keywords",
+            "entropy"
+        ]
     },
     {
         "filename": "users.py",
@@ -24,7 +30,10 @@
         "type": "email",
         "imp": "low",
         "ent": null,
-        "match": "keywords+regex"
+        "match": [
+            "regex",
+            "keywords"
+        ]
     },
     {
         "filename": "auth-service.py",
@@ -33,6 +42,9 @@
         "type": "Password",
         "imp": "medium",
         "ent": null,
-        "match": "keywords+entropy"
+        "match": [
+            "keywords",
+            "entropy"
+        ]
     }
 ]

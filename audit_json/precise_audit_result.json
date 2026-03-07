@@ -6,7 +6,10 @@
         "type": null,
         "imp": null,
         "ent": 4.90016881727262,
-        "conf": "HIGH"
+        "match": [
+            "entropy",
+            "regex"
+        ]
     },
     {
         "filename": "users.py",
@@ -15,7 +18,10 @@
         "type": "email",
         "imp": "low",
         "ent": null,
-        "conf": "HIGH"
+        "match": [
+            "regex",
+            "keywords"
+        ]
     },
     {
         "filename": "users.py",
@@ -24,6 +30,9 @@
         "type": "email",
         "imp": "low",
         "ent": null,
-        "conf": "HIGH"
+        "match": [
+            "regex",
+            "keywords"
+        ]
     }
 ]

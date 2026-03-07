@@ -1,5 +1,29 @@
 [
     {
+        "filename": "config.py",
+        "num": 3,
+        "line": "API_KEY = \"sk_live_9fH2kLmN8pQxR3tUvW7z\"\n",
+        "type": null,
+        "imp": null,
+        "ent": 5.046457187492146
+    },
+    {
+        "filename": "config.py",
+        "num": 4,
+        "line": "SECRET_TOKEN = \"ghp_91kslD8fJd93KslmPqweRty12345\"\n",
+        "type": null,
+        "imp": null,
+        "ent": 5.108758439731455
+    },
+    {
+        "filename": "config.py",
+        "num": 7,
+        "line": "DATABASE_PASSWORD = \"admin123\"",
+        "type": null,
+        "imp": null,
+        "ent": 4.2817276788697365
+    },
+    {
         "filename": "app.py",
         "num": 3,
         "line": "BASE_URL = \"https://api.example.com\"\n",
@@ -48,28 +72,28 @@
         "ent": 4.798475756730228
     },
     {
-        "filename": "config.py",
-        "num": 3,
-        "line": "API_KEY = \"sk_live_9fH2kLmN8pQxR3tUvW7z\"\n",
+        "filename": "users.py",
+        "num": 11,
+        "line": "        email=\"ivan.petrov1999@example.com\",\n",
         "type": null,
         "imp": null,
-        "ent": 5.046457187492146
+        "ent": 4.152638373963222
     },
     {
-        "filename": "config.py",
-        "num": 4,
-        "line": "SECRET_TOKEN = \"ghp_91kslD8fJd93KslmPqweRty12345\"\n",
+        "filename": "utils.py",
+        "num": 5,
+        "line": "    return ''.join(random.choice(string.ascii_letters) for _ in range(length))\n",
         "type": null,
         "imp": null,
-        "ent": 5.108758439731455
+        "ent": 4.281683318809733
     },
     {
-        "filename": "config.py",
-        "num": 7,
-        "line": "DATABASE_PASSWORD = \"admin123\"",
+        "filename": "utils.py",
+        "num": 9,
+        "line": "    print(f\"[LOG] {message}\")",
         "type": null,
         "imp": null,
-        "ent": 4.2817276788697365
+        "ent": 4.250752013250441
     },
     {
         "filename": "env_loader.py",
@@ -94,29 +118,5 @@
         "type": null,
         "imp": null,
         "ent": 4.90016881727262
-    },
-    {
-        "filename": "users.py",
-        "num": 11,
-        "line": "        email=\"ivan.petrov1999@example.com\",\n",
-        "type": null,
-        "imp": null,
-        "ent": 4.152638373963222
-    },
-    {
-        "filename": "utils.py",
-        "num": 5,
-        "line": "    return ''.join(random.choice(string.ascii_letters) for _ in range(length))\n",
-        "type": null,
-        "imp": null,
-        "ent": 4.281683318809733
-    },
-    {
-        "filename": "utils.py",
-        "num": 9,
-        "line": "    print(f\"[LOG] {message}\")",
-        "type": null,
-        "imp": null,
-        "ent": 4.250752013250441
     }
 ]
