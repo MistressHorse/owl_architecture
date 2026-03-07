@@ -7,6 +7,8 @@ import json
 import joblib
 import math
 from collections import Counter
+from scanner.entropia import calculate_entropy 
+
 
 # Загрузка ML модели 
 MODEL_PATH = './ML/type_classifier.pkl'
@@ -69,7 +71,7 @@ def extract_features(line):
         line = ""
     features = []
     features.append(len(line))
-    features.append(entropy(line))
+    features.append(calculate_entropy(line).entropy)
     upper = sum(1 for c in line if c.isupper())
     features.append(upper / max(1, len(line)))
     lower = sum(1 for c in line if c.islower())
