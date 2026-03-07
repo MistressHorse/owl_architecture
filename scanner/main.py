@@ -1,14 +1,12 @@
-from scanner.regex import *
-from scanner.entropia import *
-from scanner.words import *
+from regex import *
+from entropia import *
+from words import *
 import os
 import re
 import json
 import joblib
 import math
 from collections import Counter
-
-
 
 # Загрузка ML модели 
 MODEL_PATH = './ML/type_classifier.pkl'
@@ -71,7 +69,7 @@ def extract_features(line):
         line = ""
     features = []
     features.append(len(line))
-    features.append(calculate_entropy(line).entropy)
+    features.append(entropy(line))
     upper = sum(1 for c in line if c.isupper())
     features.append(upper / max(1, len(line)))
     lower = sum(1 for c in line if c.islower())
@@ -290,7 +288,7 @@ def search_leaks(direct, method):
             except Exception as e:
                 continue
 
-def scan(direct, mode):
+def scan_project(direct, mode):
     clear_all_service_json()
     search_leaks(direct, 'regex')
     search_leaks(direct, 'entropia')
@@ -304,3 +302,5 @@ def scan(direct, mode):
         medium_mode(r_file, k_file, e_file)
     if mode == 'agressive':
         agressivee_mode(r_file, k_file, e_file)
+
+scan_project('./test_files', 'precise')

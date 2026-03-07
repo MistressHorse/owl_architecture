@@ -1,4 +1,4 @@
-<form action="/scan" method="post">
+<!-- <form action="/scan" method="post">
 
 <input type="text" name="path">
 
@@ -10,8 +10,8 @@
 
 <button type="submit">Scan</button>
 
-</form>
-<!-- <!DOCTYPE html>
+</form> -->
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -24,7 +24,21 @@
     </header>
     <main>
         <h1>Сканер утечек в коде</h1>
+        <form action="/scan" method="post">
+        <h3>Введите директорию, в которой будет осуществляться сканирование: </h3>
+        <input type="text" name="direct">
 
+        
+        <h3>Выберите уровень агрессивности сканирования: </h3>
+        <select name="mode">
+        <option value="precise">точный</option>
+        <option value="medium">средний</option>
+        <option value="agressive">абстрактный</option>
+        </select>
+
+        <button type="submit">Старт</button>
+
+        </form>
     </main>
 </body>
-</html> -->
+</html>
