@@ -4,7 +4,105 @@ from scanner.words import *
 import os
 import re
 import json
+import joblib
+import math
+from collections import Counter
 
+# Загрузка ML модели 
+MODEL_PATH = './type_classifier.pkl'
+CLASSES_PATH = './type_classes.pkl'
+ml_model = None
+ml_classes = []
+try:
+    ml_model = joblib.load(MODEL_PATH)
+    ml_classes = joblib.load(CLASSES_PATH)
+    print("ML модель загружена. Классы:", ml_classes)
+except:
+    print("ML модель не найдена, классификация недоступна.")
+
+# Рекомендации 
+RECOMMENDATIONS = {
+    'token': "Токены (API, JWT, OAuth)...",
+    'api_key': "Ключи API...",
+    'private_key': "Приватные ключи...",
+    'phone': "Номер телефона...",
+    'email': "Электронная почта...",
+    'passport': "Паспортные данные...",
+    'password': "Пароль...",
+    'login': "Логин...",
+    'encrypted': "Зашифрованные данные...",
+    'credit_card': "Банковская карта...",
+    'ip': "IP-адрес...",
+    'other_secret': "Другие секреты...",
+    'negative': "",
+}
+
+# Функция энтропии (если нужна, но у вас уже есть в entropy.py, но для извлечения признаков может понадобиться своя)
+def entropy(s):
+    if len(s) < 8:
+        return 0.0
+    freq = Counter(s)
+    probs = [freq[c]/len(s) for c in freq]
+    return -sum(p * math.log2(p) for p in probs)
+
+# Функция извлечения признаков (должна соответствовать обучению)
+def extract_features(line):
+    line = line.strip()
+    if not line:
+        line = ""
+    features = []
+    features.append(len(line))
+    features.append(entropy(line))
+    upper = sum(1 for c in line if c.isupper())
+    features.append(upper / max(1, len(line)))
+    lower = sum(1 for c in line if c.islower())
+    features.append(lower / max(1, len(line)))
+    digit = sum(1 for c in line if c.isdigit())
+    features.append(digit / max(1, len(line)))
+    special = len(line) - upper - lower - digit
+    features.append(special / max(1, len(line)))
+    features.append(len(set(line)))
+    features.append(1 if line and line[0] in '\'"' and line[-1] in '\'"' else 0)
+    features.append(1 if '=' in line else 0)
+    features.append(1 if ':' in line else 0)
+    features.append(1 if line.lstrip().startswith(('#', '//')) else 0)
+    features.append(1 if re.search(r'\bpassword\b', line.lower()) else 0)
+    features.append(1 if re.search(r'\btoken\b', line.lower()) else 0)
+    features.append(1 if re.search(r'\bkey\b', line.lower()) else 0)
+    features.append(1 if re.search(r'\bsecret\b', line.lower()) else 0)
+    features.append(1 if re.search(r'\b(login|user|username)\b', line.lower()) else 0)
+    features.append(1 if re.search(r'@.*\.', line) else 0)
+    phone_clean = re.sub(r'\D', '', line)
+    features.append(1 if re.match(r'^(\+7|8)[0-9]{10}$', phone_clean) else 0)
+    features.append(1 if re.match(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$', line) else 0)
+    features.append(1 if re.search(r'^\d{4}[\s-]?\d{6}$', line) else 0)
+    features.append(1 if re.search(r'^eyJ[\w-]+\.[\w-]+\.[\w-]+', line) else 0)
+    features.append(1 if re.search(r'^AKIA', line) else 0)
+    features.append(1 if re.search(r'^ghp_', line) else 0)
+    features.append(1 if re.search(r'^(sk_live_|sk_test_)', line) else 0)
+    features.append(1 if re.search(r'^-----BEGIN', line) else 0)
+    features.append(1 if re.search(r'^AIza', line) else 0)
+    features.append(1 if len(line) > 20 and re.fullmatch(r'[A-Za-z0-9+/]+=*', line) else 0)
+    features.append(1 if len(line) > 20 and re.fullmatch(r'[0-9a-f]+', line.lower()) else 0)
+    return features
+
+def classify_entropy_item(item):
+    """Принимает запись из entropy-аудита и возвращает её с добавленными полями ml_type, ml_confidence, advice."""
+    if ml_model is None:
+        return item
+    line = item.get('line', '')
+    if not line:
+        return item
+    feats = extract_features(line)
+    pred = ml_model.predict([feats])[0]
+    proba = ml_model.predict_proba([feats])[0]
+    confidence = max(proba)
+    # Можно установить порог, но пока добавляем всегда
+    item['ml_type'] = pred
+    item['ml_confidence'] = confidence
+    item['advice'] = RECOMMENDATIONS.get(pred, 'Нет рекомендации')
+    return item
+    
 def clear_all_service_json():
     with open('./audit_json/regex_audit.json','w'):
         pass
