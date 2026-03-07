@@ -122,14 +122,18 @@ def classify_entropy_item(item):
     return item
 # <блок кода Ml закончен 
 
-def clear_all_service_json():
-    with open('./audit_json/regex_audit.json','w'):
-        pass
-    with open('./audit_json/entropia_audit.json','w'):
-        pass
-    with open('./audit_json/keywords_audit.json','w'):
-        pass
+import os
 
+def clear_all_service_json():
+    # Создаём папку audit_json, если её нет
+    os.makedirs('./audit_json', exist_ok=True)
+    # Записываем пустой список JSON в каждый файл
+    with open('./audit_json/regex_audit.json', 'w', encoding='utf-8') as f:
+        json.dump([], f)
+    with open('./audit_json/entropia_audit.json', 'w', encoding='utf-8') as f:
+        json.dump([], f)
+    with open('./audit_json/keywords_audit.json', 'w', encoding='utf-8') as f:
+        json.dump([], f)
 def path(filename):
     return f'./{filename}'
 

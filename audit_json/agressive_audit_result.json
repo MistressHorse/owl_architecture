@@ -1,61 +1,44 @@
 [
     {
-        "filename": "env_loader.py",
-        "num": 6,
-        "line": "SERVICE_ACCOUNT_EMAIL = \"service-account@myproject.iam.gserviceaccount.com\"",
-        "type": "Email",
-        "imp": "LOW",
-        "ent": null,
+        "filename": "config.py",
+        "num": 3,
+        "line": "API_KEY = \"sk_live_9fH2kLmN8pQxR3tUvW7z\"\n",
+        "type": null,
+        "imp": null,
+        "ent": 5.046457187492146,
+        "ml_type": "other_secret",
+        "ml_confidence": 0.9999614609098777,
+        "advice": "\nПроблема: Обработка платежных данных в коде без соблюдения PCI DSS.\nРешение: Не хранить CVV вообще. Для тестов использовать фейковые номера (например, 4111 1111 1111 1111). Сканеры ищут номера карт (Luhn-алгоритм).\nХранение: Только токенизация через платежного провайдера.",
         "match": [
-            "regex",
             "entropy"
         ]
     },
     {
-        "filename": "users.py",
-        "num": 11,
-        "line": "        email=\"ivan.petrov1999@example.com\",\n",
-        "type": "Email",
-        "imp": "LOW",
-        "ent": null,
+        "filename": "config.py",
+        "num": 4,
+        "line": "SECRET_TOKEN = \"ghp_91kslD8fJd93KslmPqweRty12345\"\n",
+        "type": null,
+        "imp": null,
+        "ent": 5.108758439731455,
+        "ml_type": "other_secret",
+        "ml_confidence": 0.6065182765278094,
+        "advice": "\nПроблема: Обработка платежных данных в коде без соблюдения PCI DSS.\nРешение: Не хранить CVV вообще. Для тестов использовать фейковые номера (например, 4111 1111 1111 1111). Сканеры ищут номера карт (Luhn-алгоритм).\nХранение: Только токенизация через платежного провайдера.",
         "match": [
-            "regex",
-            "entropy",
-            "keywords"
+            "entropy"
         ]
     },
     {
-        "filename": "users.py",
-        "num": 12,
-        "line": "        passport=\"4509 123456\"\n",
-        "type": "Passport",
-        "imp": "MEDIUM",
-        "ent": null,
+        "filename": "config.py",
+        "num": 7,
+        "line": "DATABASE_PASSWORD = \"admin123\"",
+        "type": null,
+        "imp": null,
+        "ent": 4.2817276788697365,
+        "ml_type": "other_secret",
+        "ml_confidence": 0.9692502811602567,
+        "advice": "\nПроблема: Обработка платежных данных в коде без соблюдения PCI DSS.\nРешение: Не хранить CVV вообще. Для тестов использовать фейковые номера (например, 4111 1111 1111 1111). Сканеры ищут номера карт (Luhn-алгоритм).\nХранение: Только токенизация через платежного провайдера.",
         "match": [
-            "regex"
-        ]
-    },
-    {
-        "filename": "users.py",
-        "num": 16,
-        "line": "        email=\"anna.smirnova@mail.ru\",\n",
-        "type": "Email",
-        "imp": "LOW",
-        "ent": null,
-        "match": [
-            "regex",
-            "keywords"
-        ]
-    },
-    {
-        "filename": "users.py",
-        "num": 17,
-        "line": "        passport=\"4012 987654\"\n",
-        "type": "Passport",
-        "imp": "MEDIUM",
-        "ent": null,
-        "match": [
-            "regex"
+            "entropy"
         ]
     },
     {
@@ -65,6 +48,9 @@
         "type": null,
         "imp": null,
         "ent": 4.648510460165072,
+        "ml_type": "other_secret",
+        "ml_confidence": 0.99,
+        "advice": "\nПроблема: Обработка платежных данных в коде без соблюдения PCI DSS.\nРешение: Не хранить CVV вообще. Для тестов использовать фейковые номера (например, 4111 1111 1111 1111). Сканеры ищут номера карт (Luhn-алгоритм).\nХранение: Только токенизация через платежного провайдера.",
         "match": [
             "entropy"
         ]
@@ -76,6 +62,9 @@
         "type": null,
         "imp": null,
         "ent": 4.569730303898027,
+        "ml_type": "other_secret",
+        "ml_confidence": 0.9151562210583148,
+        "advice": "\nПроблема: Обработка платежных данных в коде без соблюдения PCI DSS.\nРешение: Не хранить CVV вообще. Для тестов использовать фейковые номера (например, 4111 1111 1111 1111). Сканеры ищут номера карт (Luhn-алгоритм).\nХранение: Только токенизация через платежного провайдера.",
         "match": [
             "entropy"
         ]
@@ -87,6 +76,9 @@
         "type": null,
         "imp": null,
         "ent": 4.284527696416556,
+        "ml_type": "other_secret",
+        "ml_confidence": 0.42547916717537915,
+        "advice": "\nПроблема: Обработка платежных данных в коде без соблюдения PCI DSS.\nРешение: Не хранить CVV вообще. Для тестов использовать фейковые номера (например, 4111 1111 1111 1111). Сканеры ищут номера карт (Luhn-алгоритм).\nХранение: Только токенизация через платежного провайдера.",
         "match": [
             "entropy"
         ]
@@ -98,6 +90,9 @@
         "type": null,
         "imp": null,
         "ent": 4.195675662809303,
+        "ml_type": "encrypted",
+        "ml_confidence": 0.715,
+        "advice": "\nПроблема: Утечка самих зашифрованных данных (например, архив с паролем) или ключей шифрования.\nРешение: Ключи шифрования — в Vault, зашифрованные данные — проверять на наличие в репозитории (бинарные файлы).\nХранение: Ключи отдельно от данных; использовать алгоритмы с доказанной стойкостью (AES-256-GCM).",
         "match": [
             "entropy"
         ]
@@ -109,6 +104,9 @@
         "type": null,
         "imp": null,
         "ent": 4.440640076685948,
+        "ml_type": "other_secret",
+        "ml_confidence": 0.3951912878787878,
+        "advice": "\nПроблема: Обработка платежных данных в коде без соблюдения PCI DSS.\nРешение: Не хранить CVV вообще. Для тестов использовать фейковые номера (например, 4111 1111 1111 1111). Сканеры ищут номера карт (Luhn-алгоритм).\nХранение: Только токенизация через платежного провайдера.",
         "match": [
             "entropy",
             "keywords"
@@ -121,63 +119,26 @@
         "type": null,
         "imp": null,
         "ent": 4.798475756730228,
+        "ml_type": "other_secret",
+        "ml_confidence": 0.6831451612903225,
+        "advice": "\nПроблема: Обработка платежных данных в коде без соблюдения PCI DSS.\nРешение: Не хранить CVV вообще. Для тестов использовать фейковые номера (например, 4111 1111 1111 1111). Сканеры ищут номера карт (Luhn-алгоритм).\nХранение: Только токенизация через платежного провайдера.",
         "match": [
             "entropy"
         ]
     },
     {
-        "filename": "config.py",
-        "num": 3,
-        "line": "API_KEY = \"sk_live_9fH2kLmN8pQxR3tUvW7z\"\n",
+        "filename": "users.py",
+        "num": 11,
+        "line": "        email=\"ivan.petrov1999@example.com\",\n",
         "type": null,
         "imp": null,
-        "ent": 5.046457187492146,
+        "ent": 4.152638373963222,
+        "ml_type": "email",
+        "ml_confidence": 0.41,
+        "advice": "\nПроблема: Утечка реальных адресов через код, логи, debug-выводы.\nРешение: Проверять код на наличие email-паттернов перед коммитом. Использовать тестовые ящики вида test@example.com.\nХранение: Шифрование в БД, маскирование в логах (например, t***@example.com).",
         "match": [
-            "entropy"
-        ]
-    },
-    {
-        "filename": "config.py",
-        "num": 4,
-        "line": "SECRET_TOKEN = \"ghp_91kslD8fJd93KslmPqweRty12345\"\n",
-        "type": null,
-        "imp": null,
-        "ent": 5.108758439731455,
-        "match": [
-            "entropy"
-        ]
-    },
-    {
-        "filename": "config.py",
-        "num": 7,
-        "line": "DATABASE_PASSWORD = \"admin123\"",
-        "type": null,
-        "imp": null,
-        "ent": 4.2817276788697365,
-        "match": [
-            "entropy"
-        ]
-    },
-    {
-        "filename": "env_loader.py",
-        "num": 3,
-        "line": "os.environ[\"AWS_SECRET_ACCESS_KEY\"] = \"wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\"\n",
-        "type": null,
-        "imp": null,
-        "ent": 5.141595064292506,
-        "match": [
-            "entropy"
-        ]
-    },
-    {
-        "filename": "env_loader.py",
-        "num": 4,
-        "line": "os.environ[\"STRIPE_SECRET\"] = \"sk_test_51N9d8FhZkLmNoPqR\"\n",
-        "type": null,
-        "imp": null,
-        "ent": 4.999801038044515,
-        "match": [
-            "entropy"
+            "entropy",
+            "keywords"
         ]
     },
     {
@@ -187,6 +148,9 @@
         "type": null,
         "imp": null,
         "ent": 4.281683318809733,
+        "ml_type": "other_secret",
+        "ml_confidence": 0.3803125,
+        "advice": "\nПроблема: Обработка платежных данных в коде без соблюдения PCI DSS.\nРешение: Не хранить CVV вообще. Для тестов использовать фейковые номера (например, 4111 1111 1111 1111). Сканеры ищут номера карт (Luhn-алгоритм).\nХранение: Только токенизация через платежного провайдера.",
         "match": [
             "entropy"
         ]
@@ -198,6 +162,51 @@
         "type": null,
         "imp": null,
         "ent": 4.250752013250441,
+        "ml_type": "other_secret",
+        "ml_confidence": 0.9783343240255171,
+        "advice": "\nПроблема: Обработка платежных данных в коде без соблюдения PCI DSS.\nРешение: Не хранить CVV вообще. Для тестов использовать фейковые номера (например, 4111 1111 1111 1111). Сканеры ищут номера карт (Luhn-алгоритм).\nХранение: Только токенизация через платежного провайдера.",
+        "match": [
+            "entropy"
+        ]
+    },
+    {
+        "filename": "env_loader.py",
+        "num": 3,
+        "line": "os.environ[\"AWS_SECRET_ACCESS_KEY\"] = \"wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\"\n",
+        "type": null,
+        "imp": null,
+        "ent": 5.141595064292506,
+        "ml_type": "other_secret",
+        "ml_confidence": 0.9799976247030878,
+        "advice": "\nПроблема: Обработка платежных данных в коде без соблюдения PCI DSS.\nРешение: Не хранить CVV вообще. Для тестов использовать фейковые номера (например, 4111 1111 1111 1111). Сканеры ищут номера карт (Luhn-алгоритм).\nХранение: Только токенизация через платежного провайдера.",
+        "match": [
+            "entropy"
+        ]
+    },
+    {
+        "filename": "env_loader.py",
+        "num": 4,
+        "line": "os.environ[\"STRIPE_SECRET\"] = \"sk_test_51N9d8FhZkLmNoPqR\"\n",
+        "type": null,
+        "imp": null,
+        "ent": 4.999801038044515,
+        "ml_type": "other_secret",
+        "ml_confidence": 0.9899716713881019,
+        "advice": "\nПроблема: Обработка платежных данных в коде без соблюдения PCI DSS.\nРешение: Не хранить CVV вообще. Для тестов использовать фейковые номера (например, 4111 1111 1111 1111). Сканеры ищут номера карт (Luhn-алгоритм).\nХранение: Только токенизация через платежного провайдера.",
+        "match": [
+            "entropy"
+        ]
+    },
+    {
+        "filename": "env_loader.py",
+        "num": 6,
+        "line": "SERVICE_ACCOUNT_EMAIL = \"service-account@myproject.iam.gserviceaccount.com\"",
+        "type": null,
+        "imp": null,
+        "ent": 4.90016881727262,
+        "ml_type": "other_secret",
+        "ml_confidence": 0.7879566092821907,
+        "advice": "\nПроблема: Обработка платежных данных в коде без соблюдения PCI DSS.\nРешение: Не хранить CVV вообще. Для тестов использовать фейковые номера (например, 4111 1111 1111 1111). Сканеры ищут номера карт (Luhn-алгоритм).\nХранение: Только токенизация через платежного провайдера.",
         "match": [
             "entropy"
         ]

@@ -5,7 +5,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from typing import Annotated
 from python_multipart import *
-
+from scanner.main import scan as scanner_scan
 
 app = FastAPI()
 mode = None
@@ -20,7 +20,7 @@ def home(request: Request):
 def scan(request: Request,
          direct: Annotated[str, Form()], 
          mode: Annotated[str, Form()]):
-    result = scan(direct, mode)
+    result = scanner_scan(direct, mode)
     return templates.TemplateResponse(
         'results.html',
         {
