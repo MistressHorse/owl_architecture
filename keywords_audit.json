@@ -1,0 +1,98 @@
+[
+    {
+        "filename": "auth-service.py",
+        "num": 3,
+        "line": "PRIVATE_KEY = \"\"\"-----BEGIN PRIVATE KEY-----\n",
+        "type": "Key",
+        "imp": "high",
+        "ent": null
+    },
+    {
+        "filename": "auth-service.py",
+        "num": 6,
+        "line": "-----END PRIVATE KEY-----\"\"\"\n",
+        "type": "Key",
+        "imp": "high",
+        "ent": null
+    },
+    {
+        "filename": "auth-service.py",
+        "num": 8,
+        "line": "def hash_password(password: str) -> str:\n",
+        "type": "Password",
+        "imp": "medium",
+        "ent": null
+    },
+    {
+        "filename": "auth-service.py",
+        "num": 9,
+        "line": "    return hashlib.sha256(password.encode()).hexdigest()\n",
+        "type": "Password",
+        "imp": "medium",
+        "ent": null
+    },
+    {
+        "filename": "auth-service.py",
+        "num": 12,
+        "line": "def authenticate(token: str):\n",
+        "type": "Token",
+        "imp": "high",
+        "ent": null
+    },
+    {
+        "filename": "users.py",
+        "num": 1,
+        "line": "class User:\n",
+        "type": "Username",
+        "imp": "low",
+        "ent": null
+    },
+    {
+        "filename": "users.py",
+        "num": 2,
+        "line": "    def __init__(self, name, email, passport):\n",
+        "type": "email",
+        "imp": "low",
+        "ent": null
+    },
+    {
+        "filename": "users.py",
+        "num": 4,
+        "line": "        self.email = email\n",
+        "type": "email",
+        "imp": "low",
+        "ent": null
+    },
+    {
+        "filename": "users.py",
+        "num": 9,
+        "line": "    User(\n",
+        "type": "Username",
+        "imp": "low",
+        "ent": null
+    },
+    {
+        "filename": "users.py",
+        "num": 11,
+        "line": "        email=\"ivan.petrov1999@example.com\",\n",
+        "type": "email",
+        "imp": "low",
+        "ent": null
+    },
+    {
+        "filename": "users.py",
+        "num": 14,
+        "line": "    User(\n",
+        "type": "Username",
+        "imp": "low",
+        "ent": null
+    },
+    {
+        "filename": "users.py",
+        "num": 16,
+        "line": "        email=\"anna.smirnova@mail.ru\",\n",
+        "type": "email",
+        "imp": "low",
+        "ent": null
+    }
+]

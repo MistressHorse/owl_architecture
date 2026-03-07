@@ -1,0 +1,205 @@
+[
+    {
+        "filename": "env_loader.py",
+        "num": 6,
+        "line": "SERVICE_ACCOUNT_EMAIL = \"service-account@myproject.iam.gserviceaccount.com\"",
+        "type": "Email",
+        "imp": "LOW",
+        "ent": null,
+        "match": [
+            "regex",
+            "entropy"
+        ]
+    },
+    {
+        "filename": "users.py",
+        "num": 11,
+        "line": "        email=\"ivan.petrov1999@example.com\",\n",
+        "type": "Email",
+        "imp": "LOW",
+        "ent": null,
+        "match": [
+            "regex",
+            "entropy",
+            "keywords"
+        ]
+    },
+    {
+        "filename": "users.py",
+        "num": 12,
+        "line": "        passport=\"4509 123456\"\n",
+        "type": "Passport",
+        "imp": "MEDIUM",
+        "ent": null,
+        "match": [
+            "regex"
+        ]
+    },
+    {
+        "filename": "users.py",
+        "num": 16,
+        "line": "        email=\"anna.smirnova@mail.ru\",\n",
+        "type": "Email",
+        "imp": "LOW",
+        "ent": null,
+        "match": [
+            "regex",
+            "keywords"
+        ]
+    },
+    {
+        "filename": "users.py",
+        "num": 17,
+        "line": "        passport=\"4012 987654\"\n",
+        "type": "Passport",
+        "imp": "MEDIUM",
+        "ent": null,
+        "match": [
+            "regex"
+        ]
+    },
+    {
+        "filename": "app.py",
+        "num": 3,
+        "line": "BASE_URL = \"https://api.example.com\"\n",
+        "type": null,
+        "imp": null,
+        "ent": 4.648510460165072,
+        "match": [
+            "entropy"
+        ]
+    },
+    {
+        "filename": "app.py",
+        "num": 6,
+        "line": "    response = os.get(f\"{BASE_URL}/users/{user_id}\")\n",
+        "type": null,
+        "imp": null,
+        "ent": 4.569730303898027,
+        "match": [
+            "entropy"
+        ]
+    },
+    {
+        "filename": "auth-service.py",
+        "num": 4,
+        "line": "MIIEvQIBADANBgkqhkiG9w0BAQEFAASC...\n",
+        "type": null,
+        "imp": null,
+        "ent": 4.284527696416556,
+        "match": [
+            "entropy"
+        ]
+    },
+    {
+        "filename": "auth-service.py",
+        "num": 5,
+        "line": "U29tZVN1cGVyU2VjcmV0S2V5Q29udGVudA==\n",
+        "type": null,
+        "imp": null,
+        "ent": 4.195675662809303,
+        "match": [
+            "entropy"
+        ]
+    },
+    {
+        "filename": "auth-service.py",
+        "num": 9,
+        "line": "    return hashlib.sha256(password.encode()).hexdigest()\n",
+        "type": null,
+        "imp": null,
+        "ent": 4.440640076685948,
+        "match": [
+            "entropy",
+            "keywords"
+        ]
+    },
+    {
+        "filename": "auth-service.py",
+        "num": 13,
+        "line": "    if token == \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\":\n",
+        "type": null,
+        "imp": null,
+        "ent": 4.798475756730228,
+        "match": [
+            "entropy"
+        ]
+    },
+    {
+        "filename": "config.py",
+        "num": 3,
+        "line": "API_KEY = \"sk_live_9fH2kLmN8pQxR3tUvW7z\"\n",
+        "type": null,
+        "imp": null,
+        "ent": 5.046457187492146,
+        "match": [
+            "entropy"
+        ]
+    },
+    {
+        "filename": "config.py",
+        "num": 4,
+        "line": "SECRET_TOKEN = \"ghp_91kslD8fJd93KslmPqweRty12345\"\n",
+        "type": null,
+        "imp": null,
+        "ent": 5.108758439731455,
+        "match": [
+            "entropy"
+        ]
+    },
+    {
+        "filename": "config.py",
+        "num": 7,
+        "line": "DATABASE_PASSWORD = \"admin123\"",
+        "type": null,
+        "imp": null,
+        "ent": 4.2817276788697365,
+        "match": [
+            "entropy"
+        ]
+    },
+    {
+        "filename": "env_loader.py",
+        "num": 3,
+        "line": "os.environ[\"AWS_SECRET_ACCESS_KEY\"] = \"wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\"\n",
+        "type": null,
+        "imp": null,
+        "ent": 5.141595064292506,
+        "match": [
+            "entropy"
+        ]
+    },
+    {
+        "filename": "env_loader.py",
+        "num": 4,
+        "line": "os.environ[\"STRIPE_SECRET\"] = \"sk_test_51N9d8FhZkLmNoPqR\"\n",
+        "type": null,
+        "imp": null,
+        "ent": 4.999801038044515,
+        "match": [
+            "entropy"
+        ]
+    },
+    {
+        "filename": "utils.py",
+        "num": 5,
+        "line": "    return ''.join(random.choice(string.ascii_letters) for _ in range(length))\n",
+        "type": null,
+        "imp": null,
+        "ent": 4.281683318809733,
+        "match": [
+            "entropy"
+        ]
+    },
+    {
+        "filename": "utils.py",
+        "num": 9,
+        "line": "    print(f\"[LOG] {message}\")",
+        "type": null,
+        "imp": null,
+        "ent": 4.250752013250441,
+        "match": [
+            "entropy"
+        ]
+    }
+]

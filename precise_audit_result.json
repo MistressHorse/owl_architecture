@@ -1,0 +1,29 @@
+[
+    {
+        "filename": "env_loader.py",
+        "num": 6,
+        "line": "SERVICE_ACCOUNT_EMAIL = \"service-account@myproject.iam.gserviceaccount.com\"",
+        "type": null,
+        "imp": null,
+        "ent": 4.90016881727262,
+        "conf": "HIGH"
+    },
+    {
+        "filename": "users.py",
+        "num": 11,
+        "line": "        email=\"ivan.petrov1999@example.com\",\n",
+        "type": "email",
+        "imp": "low",
+        "ent": null,
+        "conf": "HIGH"
+    },
+    {
+        "filename": "users.py",
+        "num": 16,
+        "line": "        email=\"anna.smirnova@mail.ru\",\n",
+        "type": "email",
+        "imp": "low",
+        "ent": null,
+        "conf": "HIGH"
+    }
+]

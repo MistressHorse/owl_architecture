@@ -1,0 +1,38 @@
+[
+    {
+        "filename": "env_loader.py",
+        "num": 6,
+        "line": "SERVICE_ACCOUNT_EMAIL = \"service-account@myproject.iam.gserviceaccount.com\"",
+        "type": null,
+        "imp": null,
+        "ent": 4.90016881727262,
+        "match": "entropy+regex"
+    },
+    {
+        "filename": "users.py",
+        "num": 11,
+        "line": "        email=\"ivan.petrov1999@example.com\",\n",
+        "type": "email",
+        "imp": "low",
+        "ent": null,
+        "match": "keywords+entropy"
+    },
+    {
+        "filename": "users.py",
+        "num": 16,
+        "line": "        email=\"anna.smirnova@mail.ru\",\n",
+        "type": "email",
+        "imp": "low",
+        "ent": null,
+        "match": "keywords+regex"
+    },
+    {
+        "filename": "auth-service.py",
+        "num": 9,
+        "line": "    return hashlib.sha256(password.encode()).hexdigest()\n",
+        "type": "Password",
+        "imp": "medium",
+        "ent": null,
+        "match": "keywords+entropy"
+    }
+]

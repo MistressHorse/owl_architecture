@@ -3,46 +3,61 @@
         {"name": "bearer-like-token",
         "pattern": "eyJ\\w{10,100}\\.eyJ\\w{10,100}.\\w{10,100}",
         "importance": "HIGH",
-        "log": "Bearer-token was found!"},
+        "log": "Bearer-token"},
 
         {"name": "aws-key-id",
         "pattern": "AKIA.[^\\s]{36}",
         "importance": "HIGH",
-        "log": "AWS Access Key ID was found!"},
+        "log": "AWS Access Key ID"},
 
         {"name": "stripe-secret-key",
         "pattern": "sk_test_\\w[^_]{24,34}|sk_live_\\w[^ _]{24,34}",
         "importance": "HIGH",
-        "log": "Stripe Secret Key was found!"},
+        "log": "Stripe Secret Key"},
 
         {"name": "google-api-key",
         "pattern": "AIza[0-9A-Za-z\\-_]{35}",
         "importance": "HIGH",
-        "log": "Google API Key was found!"},
+        "log": "Google API Key"},
 
         {"name": "github-token",
         "pattern": "gh[pousr]_[0-9a-zA-Z]{36}",
         "importance": "HIGH",
-        "log": "Github-token was found!"},
+        "log": "Github-token"},
 
         {"name": "phone-number",
         "pattern": "\\+7[0-9]{10}",
         "importance": "LOW",
-        "log": "Phone number was found!"},
+        "log": "Phone number"},
 
         {"name": "email",
         "pattern": "[\\w.-]+@[\\w.-]+\\.\\w+",
         "importance": "LOW",
-        "log": "Email was found!"},
+        "log": "Email"},
 
         {"name": "passport",
         "pattern": "\\b\\d{4}\\s?\\d{6}\\b",
-        "importance": "ME    DIUM",
-        "log": "Russian passport was found!"},
+        "importance": "MEDIUM",
+        "log": "Passport"},
         
         {"name": "ip-address",
         "pattern": "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}",
         "importance": "LOW",
-        "log": "Russian passport was found!"}
+        "log": "IPv4"},
+
+        {"name": "snils",
+        "pattern": "^\\d{3}-\\d{3}-\\d{3} \\d{2}$",
+        "importance": "MEDIUM",
+        "log": "SNILS"},
+
+        {"name": "snils",
+        "pattern": "^\\d{3}-\\d{3}-\\d{3} \\d{2}$",
+        "importance": "MEDIUM",
+        "log": "SNILS"},
+
+        {"name": "inn",
+        "pattern": "^(\\d{10}|\\d{12})$",
+        "importance": "MEDIUM",
+        "log": "INN"}
     ]
 }
