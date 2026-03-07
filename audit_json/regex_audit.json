@@ -1,0 +1,42 @@
+[
+    {
+        "filename": "env_loader.py",
+        "num": 6,
+        "line": "SERVICE_ACCOUNT_EMAIL = \"service-account@myproject.iam.gserviceaccount.com\"",
+        "type": "Email",
+        "imp": "LOW",
+        "ent": null
+    },
+    {
+        "filename": "users.py",
+        "num": 11,
+        "line": "        email=\"ivan.petrov1999@example.com\",\n",
+        "type": "Email",
+        "imp": "LOW",
+        "ent": null
+    },
+    {
+        "filename": "users.py",
+        "num": 12,
+        "line": "        passport=\"4509 123456\"\n",
+        "type": "Passport",
+        "imp": "MEDIUM",
+        "ent": null
+    },
+    {
+        "filename": "users.py",
+        "num": 16,
+        "line": "        email=\"anna.smirnova@mail.ru\",\n",
+        "type": "Email",
+        "imp": "LOW",
+        "ent": null
+    },
+    {
+        "filename": "users.py",
+        "num": 17,
+        "line": "        passport=\"4012 987654\"\n",
+        "type": "Passport",
+        "imp": "MEDIUM",
+        "ent": null
+    }
+]

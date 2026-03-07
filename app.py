@@ -1,4 +1,4 @@
-from scanner.main import *
+from main import *
 from fastapi import FastAPI, Form, Request
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
@@ -21,7 +21,7 @@ def scan(request: Request,
          mode: Annotated[str, Form()]):
     
     scan_project(direct, mode)
-    with open(f'{mode}_audit_result.json', 'r', encoding='utf-8') as f:
+    with open(f'./audit_json/{mode}_audit_result.json', 'r', encoding='utf-8') as f:
         result = json.load(f)
 
     return templates.TemplateResponse(
