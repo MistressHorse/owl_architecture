@@ -6,18 +6,18 @@ import re
 import json
 
 def clear_all_service_json():
-    with open('./regex_audit.json','w'):
+    with open('./audit_json/regex_audit.json','w'):
         pass
-    with open('./entropia_audit.json','w'):
+    with open('./audit_json/entropia_audit.json','w'):
         pass
-    with open('./keywords_audit.json','w'):
+    with open('./audit_json/keywords_audit.json','w'):
         pass
 
 def path(filename):
     return f'./{filename}'
 
 def logging(filename, num, line, type, imp, ent, method, kwd_point=None):
-    par_to_json(filename, num, line, type, imp, ent, f'./{method}_audit.json')
+    par_to_json(filename, num, line, type, imp, ent, f'./audit_json/{method}_audit.json')
 
 def make_key(obj):
     return (obj['filename'], obj['num'])
@@ -71,7 +71,7 @@ def precise_mode(r_file, k_file, e_file, service=False):
                 seen.add(key)
             result.append(merged)
     if service == False:
-        with open('precise_audit_result.json', 'w', encoding='utf-8') as f:
+        with open('./audit_json/precise_audit_result.json', 'w', encoding='utf-8') as f:
             json.dump(result, f, ensure_ascii=False, indent=4)
     else:
         return result
@@ -98,7 +98,7 @@ def medium_mode(r_file, k_file, e_file, service=False):
         result_d[key] = i
     result = list(result_d.values())
     if service == False:
-        with open('medium_audit_result.json', 'w', encoding='utf-8') as f:
+        with open('./audit_json/medium_audit_result.json', 'w', encoding='utf-8') as f:
             json.dump(result, f, ensure_ascii=False, indent=4)
     else:
         return result
@@ -133,7 +133,7 @@ def agressivee_mode(r_file, k_file, e_file):
             result_d[key]['match'].append('keywords')
     
     result = list(result_d.values())
-    with open('agressive_audit_result.json', 'w', encoding='utf-8') as f:
+    with open('./audit_json/agressive_audit_result.json', 'w', encoding='utf-8') as f:
             json.dump(result, f, ensure_ascii=False, indent=4)
     
     
@@ -166,4 +166,6 @@ if __name__ == '__main__':
     search_leaks(direct, 'regex')
     search_leaks(direct, 'entropia')
     search_leaks(direct, 'keywords')
-    agressivee_mode('./regex_audit.json', './keywords_audit.json', './entropia_audit.json')
+    agressivee_mode('./audit_json/regex_audit.json', 
+                    './audit_json/keywords_audit.json', 
+                    './audit_json/entropia_audit.json')
