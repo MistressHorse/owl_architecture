@@ -7,7 +7,7 @@ import json
 import joblib
 import math
 from collections import Counter
-from scanner.entropia import calculate_entropy 
+
 
 
 # Загрузка ML модели 
