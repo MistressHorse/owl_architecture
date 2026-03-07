@@ -8,6 +8,7 @@ import joblib
 import math
 from collections import Counter
 
+# Ml
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 MODEL_PATH = os.path.join(BASE_DIR, 'ML', 'type_classifier.pkl')
@@ -119,7 +120,7 @@ def classify_entropy_item(item):
     item['ml_confidence'] = confidence
     item['advice'] = recommendation.get(pred, 'Нет рекомендации')
     return item
-
+# <блок кода Ml закончен 
 
 def clear_all_service_json():
     with open('./audit_json/regex_audit.json','w'):
@@ -266,7 +267,7 @@ def search_leaks(direct, method):
         for filename in files:
             path = os.path.join(root, filename)
             try:
-                with open(path, 'r', encoding='utf-8', errors='ignore') as file:
+                with open(path, 'r', encoding='utf-8', errors='ignore') as file: # открывать файл в UTF-8
                     num = 0
                     for line in file:
                         num += 1
@@ -287,7 +288,7 @@ def search_leaks(direct, method):
                             dlp_result = analyze_line(line)
                             if not dlp_result.skip:
                                 logging(filename, num, line, dlp_result.leak_type, dlp_result.severity, None, method, 1)
-            except Exception as e:
+            except Exception as e: # пропускать бинарники и тд 
                 continue
 
 def scan(direct, mode):
