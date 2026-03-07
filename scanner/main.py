@@ -9,8 +9,8 @@ import math
 from collections import Counter
 
 # Загрузка ML модели 
-MODEL_PATH = './type_classifier.pkl'
-CLASSES_PATH = './type_classes.pkl'
+MODEL_PATH = './scanner/ML/type_classifier.pkl'
+CLASSES_PATH = './scanner/ML/type_classes.pkl'
 ml_model = None
 ml_classes = []
 try:
