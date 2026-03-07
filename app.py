@@ -9,8 +9,8 @@ from python_multipart import *
 
 app = FastAPI()
 mode = None
-templates = Jinja2Templates(directory='templates')
-app.mount('/static', StaticFiles(directory='static'), name='static')
+templates = Jinja2Templates(directory='./web/templates')
+app.mount('/static', StaticFiles(directory='./web/static'), name='static')
 
 @app.get('/')
 def home(request: Request):
