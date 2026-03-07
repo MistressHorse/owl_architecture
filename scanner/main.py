@@ -21,31 +21,48 @@ except:
     print("ML модель не найдена, классификация недоступна.")
 
 # Рекомендации 
-RECOMMENDATIONS = {
-    'token': "Токены (API, JWT, OAuth)...",
-    'api_key': "Ключи API...",
-    'private_key': "Приватные ключи...",
-    'phone': "Номер телефона...",
-    'email': "Электронная почта...",
-    'passport': "Паспортные данные...",
-    'password': "Пароль...",
-    'login': "Логин...",
-    'encrypted': "Зашифрованные данные...",
-    'credit_card': "Банковская карта...",
-    'ip': "IP-адрес...",
-    'other_secret': "Другие секреты...",
-    'negative': "",
+recommendation= { 
+    'token': """
+Проблема: Попадание токенов в код (хардкод) или коммиты.
+Решение: Немедленно заменить токен и перевыпустить. Используйте переменные окружения, vault-системы (HashiCorp Vault, AWS Secrets Manager). Никогда не храните токены в репозитории.""",
+    'phone': """
+Проблема: Попадание реальных номеров в тестовые данные, логи, баги.
+Решение: Использовать фейковые номера (например, +7 999 999-99-99) в тестах. Хранение: в базе шифровать (AES-256) или хешировать с солью. Не логировать номера в открытом виде.""",
+    'email':"""
+Проблема: Утечка реальных адресов через код, логи, debug-выводы.
+Решение: Проверять код на наличие email-паттернов перед коммитом. Использовать тестовые ящики вида test@example.com.
+Хранение: Шифрование в БД, маскирование в логах (например, t***@example.com).""",
+    'passport':"""
+Проблема: Попадание в код примеров, фикстур, тестовых данных.
+Решение: В тестах использовать заведомо невалидные данные (например, 1111 111111). Сканеры можно обучить на регулярные выражения паспортов РФ.
+Хранение: Строгое шифрование; доступ только по необходимости; аудит доступа.""",
+    'login':"""
+Проблема: Хардкод учетных записей в конфигах, особенно для dev-сред.
+Решение: Сканеры ищут слова password, pwd и рядом стоящие строки. Используйте dotenv или secret management.
+Хранение: Никогда не храните пароли в открытом виде. Используйте bcrypt/argon2 для хеширования.""",
+    'password':"""
+Проблема: Хардкод учетных записей в конфигах, особенно для dev-сред.
+Решение: Сканеры ищут слова password, pwd и рядом стоящие строки. Используйте dotenv или secret management.
+Хранение: Никогда не храните пароли в открытом виде. Используйте bcrypt/argon2 для хеширования.""",
+    'encrypted':"""
+Проблема: Утечка самих зашифрованных данных (например, архив с паролем) или ключей шифрования.
+Решение: Ключи шифрования — в Vault, зашифрованные данные — проверять на наличие в репозитории (бинарные файлы).
+Хранение: Ключи отдельно от данных; использовать алгоритмы с доказанной стойкостью (AES-256-GCM).""",
+    'other_secret':"""
+Проблема: Обработка платежных данных в коде без соблюдения PCI DSS.
+Решение: Не хранить CVV вообще. Для тестов использовать фейковые номера (например, 4111 1111 1111 1111). Сканеры ищут номера карт (Luhn-алгоритм).
+Хранение: Только токенизация через платежного провайдера.""",
+    'ip':"""
+Проблема: Утечка внутренних IP в логах, конфигах, коде.
+Решение: Маскировать IP в логах (например, 192.168.1.xxx), не публиковать внутренние подсети.
+Хранение: Агрегировать, анонимизировать (GDPR/152-ФЗ).""",
+    'key':"""
+Проблема: Приватные ключи в репозитории.
+Решение: Сканеры ищут начало блоков (-----BEGIN PRIVATE KEY-----). Добавить .gitignore для файлов с ключами.
+Хранение: Используйте агенты (ssh-agent), аппаратные токены (YubiKey) или секретные хранилища.""",
 }
 
-# Функция энтропии (если нужна, но у вас уже есть в entropy.py, но для извлечения признаков может понадобиться своя)
-def entropy(s):
-    if len(s) < 8:
-        return 0.0
-    freq = Counter(s)
-    probs = [freq[c]/len(s) for c in freq]
-    return -sum(p * math.log2(p) for p in probs)
-
-# Функция извлечения признаков (должна соответствовать обучению)
+# Функция извлечения признаков 
 def extract_features(line):
     line = line.strip()
     if not line:
@@ -87,7 +104,6 @@ def extract_features(line):
     return features
 
 def classify_entropy_item(item):
-    """Принимает запись из entropy-аудита и возвращает её с добавленными полями ml_type, ml_confidence, advice."""
     if ml_model is None:
         return item
     line = item.get('line', '')
@@ -97,12 +113,12 @@ def classify_entropy_item(item):
     pred = ml_model.predict([feats])[0]
     proba = ml_model.predict_proba([feats])[0]
     confidence = max(proba)
-    # Можно установить порог, но пока добавляем всегда
     item['ml_type'] = pred
     item['ml_confidence'] = confidence
-    item['advice'] = RECOMMENDATIONS.get(pred, 'Нет рекомендации')
+    item['advice'] = recommendation.get(pred, 'Нет рекомендации')
     return item
-    
+
+
 def clear_all_service_json():
     with open('./audit_json/regex_audit.json','w'):
         pass
@@ -151,6 +167,8 @@ def precise_mode(r_file, k_file, e_file, service=False):
         k_data = json.load(f)
     with open(f'{e_file}', encoding='utf-8') as f:
         e_data = json.load(f)
+         # ML
+    e_data = [classify_entropy_item(item) for item in e_data]
     
     e_dict = {make_key(x): x for x in e_data}
     k_dict = {make_key(x): x for x in k_data}
@@ -181,6 +199,9 @@ def medium_mode(r_file, k_file, e_file, service=False):
         k_data = json.load(f)
     with open(f'{e_file}', encoding='utf-8') as f:
         e_data = json.load(f)
+    # ML
+    e_data = [classify_entropy_item(item) for item in e_data]
+    
     k_dict = {make_key(x): x for x in k_data}
     precise_list = precise_mode(r_file, k_file, e_file, True)
     result_med = []
@@ -208,6 +229,8 @@ def agressivee_mode(r_file, k_file, e_file):
         k_data = json.load(f)
     with open(f'{e_file}', encoding='utf-8') as f:
         e_data = json.load(f)
+    # ML
+    e_data = [classify_entropy_item(item) for item in e_data]
     result_d = {}
     seen = set()
     
