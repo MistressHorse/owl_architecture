@@ -10,7 +10,7 @@
 `pip install -r requirements.txt`
 
 Запустите сканер командой: 
-`python3 scan.py scan_file agressive # выберете тип агрессивности: medium, agressive`
+`python3 scan.py scan.file agressive # выберете тип агрессивности: medium, agressive`
 
 Посмотрите результат сканирования в папке audit_json
 
