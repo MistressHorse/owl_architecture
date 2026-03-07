@@ -7,24 +7,61 @@ import json
 import joblib
 import math
 from collections import Counter
+from pathlib import Path
+
+def find_file_upwards(filename, start_dir):
+    current = Path(start_dir).resolve()
+    while True:
+        candidate = current / filename
+        if candidate.exists():
+            return candidate
+        if current.parent == current:
+            break
+        current = current.parent
+    return None
+
+def find_file_recursive(filename, root_dir):
+    for root, dirs, files in os.walk(root_dir):
+        if filename in files:
+            return Path(root) / filename
+    return None
+
+BASE_DIR = Path(__file__).resolve().parent
+
+MODEL_FILENAME = 'type_classifier.pkl'
+CLASSES_FILENAME = 'type_classes.pkl'
+
+model_path = find_file_upwards(MODEL_FILENAME, BASE_DIR)
+classes_path = find_file_upwards(CLASSES_FILENAME, BASE_DIR)
+
+if model_path is None or classes_path is None:
+
+    project_root = None
+    for parent in [BASE_DIR] + list(BASE_DIR.parents):
+        if (parent / '.git').exists() or (parent / 'app.py').exists():
+            project_root = parent
+            break
+    if project_root is None:
+        project_root = Path.home() 
+
+    if model_path is None:
+        model_path = find_file_recursive(MODEL_FILENAME, project_root)
+    if classes_path is None:
+        classes_path = find_file_recursive(CLASSES_FILENAME, project_root)
 
 
-
-# Загрузка ML модели 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-MODEL_PATH = os.path.join(BASE_DIR, 'ML', 'type_classifier.pkl')
-CLASSES_PATH = os.path.join(BASE_DIR, 'ML', 'type_classes.pkl')
-
+ml_model = None
 ml_classes = []
-try:
-    ml_model = joblib.load(MODEL_PATH)
-    ml_classes = joblib.load(CLASSES_PATH)
-    print("ML модель загружена. Классы:", ml_classes)
-except Exception as e:
-    print("Ошибка загрузки ML модели:", e)
-    ml_model = None
-    ml_classes = []
+if model_path and classes_path:
+    try:
+        ml_model = joblib.load(model_path)
+        ml_classes = joblib.load(classes_path)
+        print(f"ML модель загружена из {model_path}")
+        print("Классы:", ml_classes)
+    except Exception as e:
+        print(f"Ошибка загрузки ML модели: {e}")
+else:
+    print("Файлы моделей не найдены, классификация недоступна.")
 
 # Рекомендации 
 recommendation= { 
