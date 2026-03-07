@@ -263,10 +263,16 @@ def search_leaks(direct, method):
     for root, dirs, files in os.walk(direct):
         for filename in files:
             path = os.path.join(root,filename)
+            try:
+                with open(path, 'r', encoding='utf-8', errors='ignore') as file:
             with open(path, 'r') as file:
                 num = 0
                 for line in file:
                     num+=1
+                     line_stripped = line.strip()
+                        if not line_stripped:  
+                            continue
+                            
                     if method == 'regex':
                         dlp_base = RegexService('./rules.json')
                         dlp_result = dlp_base.check_line(line)
@@ -280,6 +286,8 @@ def search_leaks(direct, method):
                         dlp_result = analyze_line(line)
                         if not dlp_result.skip:
                             logging(filename, num, line, dlp_result.leak_type, dlp_result.severity, None, method, 1)
+             except Exception as e:
+                continue
 
 def scan(direct, mode):
     clear_all_service_json()
