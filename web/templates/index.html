@@ -1,4 +1,4 @@
-<form action="/scan" method="post">
+<!-- <form action="/scan" method="post">
 
 <input type="text" name="direct">
 
@@ -10,8 +10,8 @@
 
 <button type="submit">Scan</button>
 
-</form>
-<!-- <!DOCTYPE html>
+</form> -->
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -20,11 +20,22 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-    </header>
-    <main>
-        <h1>Сканер утечек в коде</h1>
-
-    </main>
+    <div class="main-container">
+        <h1 class="main-title">Сканер утечек в коде</h1>
+        <div class="section-label">Введите директорию для сканирования</div>
+        <input type="text" class="input-field" placeholder="Путь к директории">
+        
+        <div class="mode-label">Выберите уровень агрессивности проверки</div>
+        <div class="mode-buttons">
+            <button class="mode-btn">Precise</button>
+            <button class="mode-btn">Medium</button>
+            <button class="mode-btn">Aggressive</button>
+        </div>
+        
+        <button class="export-btn-left">Перевести в JSON</button>
+        <button class="export-btn-right">Перевести в Excel</button>
+        
+        <div class="decor-line"></div>
+    </div>
 </body>
-</html> -->
+</html>
