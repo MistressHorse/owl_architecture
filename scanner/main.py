@@ -262,31 +262,30 @@ def agressivee_mode(r_file, k_file, e_file):
 def search_leaks(direct, method):
     for root, dirs, files in os.walk(direct):
         for filename in files:
-            path = os.path.join(root,filename)
+            path = os.path.join(root, filename)
             try:
                 with open(path, 'r', encoding='utf-8', errors='ignore') as file:
-            with open(path, 'r') as file:
-                num = 0
-                for line in file:
-                    num+=1
-                     line_stripped = line.strip()
+                    num = 0
+                    for line in file:
+                        num += 1
+                        line_stripped = line.strip()
                         if not line_stripped:  
                             continue
-                            
-                    if method == 'regex':
-                        dlp_base = RegexService('./rules.json')
-                        dlp_result = dlp_base.check_line(line)
-                        if not dlp_result.skip:
-                            logging(filename, num, line, dlp_result.log, dlp_result.imp, None, method)
-                    if method == 'entropia':
-                        dlp_result = calculate_entropy(line)
-                        if not dlp_result.skip:
-                            logging(filename, num, line, None, None, dlp_result.entropy, method)
-                    if method == 'keywords':
-                        dlp_result = analyze_line(line)
-                        if not dlp_result.skip:
-                            logging(filename, num, line, dlp_result.leak_type, dlp_result.severity, None, method, 1)
-             except Exception as e:
+
+                        if method == 'regex':
+                            dlp_base = RegexService('./rules.json')
+                            dlp_result = dlp_base.check_line(line)
+                            if not dlp_result.skip:
+                                logging(filename, num, line, dlp_result.log, dlp_result.imp, None, method)
+                        elif method == 'entropia':
+                            dlp_result = calculate_entropy(line)
+                            if not dlp_result.skip:
+                                logging(filename, num, line, None, None, dlp_result.entropy, method)
+                        elif method == 'keywords':
+                            dlp_result = analyze_line(line)
+                            if not dlp_result.skip:
+                                logging(filename, num, line, dlp_result.leak_type, dlp_result.severity, None, method, 1)
+            except Exception as e:
                 continue
 
 def scan(direct, mode):
