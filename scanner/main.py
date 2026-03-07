@@ -159,13 +159,18 @@ def search_leaks(direct, method):
                         dlp_result = analyze_line(line)
                         if not dlp_result.skip:
                             logging(filename, num, line, dlp_result.leak_type, dlp_result.severity, None, method, 1)
-                        
-if __name__ == '__main__':
+
+def scan(direct, mode):
     clear_all_service_json()
-    direct = str(input('Введите директорию, в которой будет осуществляться поиск: '))
     search_leaks(direct, 'regex')
     search_leaks(direct, 'entropia')
     search_leaks(direct, 'keywords')
-    agressivee_mode('./audit_json/regex_audit.json', 
-                    './audit_json/keywords_audit.json', 
-                    './audit_json/entropia_audit.json')
+    r_file = './audit_json/regex_audit.json'
+    k_file = './audit_json/keywords_audit.json'
+    e_file = './audit_json/entropia_audit.json'
+    if mode == 'precise':
+        precise_mode(r_file, k_file, e_file)
+    if mode == 'medium':
+        medium_mode(r_file, k_file, e_file)
+    if mode == 'agressive':
+        agressivee_mode(r_file, k_file, e_file)
