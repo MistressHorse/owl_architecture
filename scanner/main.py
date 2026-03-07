@@ -7,10 +7,10 @@ import json
 import joblib
 import math
 from collections import Counter
+import argparse 
 
-# Ml
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
 MODEL_PATH = os.path.join(BASE_DIR, 'ML', 'type_classifier.pkl')
 CLASSES_PATH = os.path.join(BASE_DIR, 'ML', 'type_classes.pkl')
 
@@ -23,7 +23,6 @@ try:
 except Exception as e:
     print("ML модель не найдена, классификация недоступна. Ошибка:", e)
 
-# Рекомендации 
 recommendation= { 
     'token': """
 Проблема: Попадание токенов в код (хардкод) или коммиты.
@@ -63,7 +62,7 @@ recommendation= {
 Проблема: Приватные ключи в репозитории.
 Решение: Сканеры ищут начало блоков (-----BEGIN PRIVATE KEY-----). Добавить .gitignore для файлов с ключами.
 Хранение: Используйте агенты (ssh-agent), аппаратные токены (YubiKey) или секретные хранилища.""",
-}
+}  
 
 # Функция извлечения признаков 
 def extract_features(line):
@@ -120,20 +119,16 @@ def classify_entropy_item(item):
     item['ml_confidence'] = confidence
     item['advice'] = recommendation.get(pred, 'Нет рекомендации')
     return item
-# <блок кода Ml закончен 
-
-import os
 
 def clear_all_service_json():
-    # Создаём папку audit_json, если её нет
     os.makedirs('./audit_json', exist_ok=True)
-    # Записываем пустой список JSON в каждый файл
     with open('./audit_json/regex_audit.json', 'w', encoding='utf-8') as f:
         json.dump([], f)
     with open('./audit_json/entropia_audit.json', 'w', encoding='utf-8') as f:
         json.dump([], f)
     with open('./audit_json/keywords_audit.json', 'w', encoding='utf-8') as f:
         json.dump([], f)
+
 def path(filename):
     return f'./{filename}'
 
@@ -161,54 +156,19 @@ def par_to_json(filename, num, line, type, imp, ent, json_path):
     else:
         data = []
     data.append(finding)
-    with open(json_path,'w',encoding='utf-8') as f:
+    with open(json_path, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=4, ensure_ascii=False)
 
-#precise - entropy+regex, kwd+regex, kwd+regex+entropy
-#medium - precise, kwd+entropy
-#agressive - medium, regex, entropy
-def precise_mode(r_file, k_file, e_file, service=False):
-    with open(f'{r_file}', encoding='utf-8') as f:
-        r_data = json.load(f)
-    with open(f'{k_file}', encoding='utf-8') as f:
-        k_data = json.load(f)
-    with open(f'{e_file}', encoding='utf-8') as f:
-        e_data = json.load(f)
-         # ML
-    e_data = [classify_entropy_item(item) for item in e_data]
-    
-    e_dict = {make_key(x): x for x in e_data}
-    k_dict = {make_key(x): x for x in k_data}
-    seen = set()
-    result = []
-    for i in r_data:
-        key = make_key(i)
-        if key in e_dict or key in k_dict:
-            if key in e_dict and key not in seen:
-                merged = {**i, **e_dict[key]}
-                merged['match'] += ['entropy','regex']
-                seen.add(key)
-            if key in k_dict:
-                merged = {**i, **k_dict[key]}
-                merged['match'] += ['regex','keywords']
-                seen.add(key)
-            result.append(merged)
-    if service == False:
-        with open('./audit_json/precise_audit_result.json', 'w', encoding='utf-8') as f:
-            json.dump(result, f, ensure_ascii=False, indent=4)
-    else:
-        return result
-
 def medium_mode(r_file, k_file, e_file, service=False):
-    with open(f'{r_file}', encoding='utf-8') as f:
+    with open(r_file, encoding='utf-8') as f:
         r_data = json.load(f)
-    with open(f'{k_file}', encoding='utf-8') as f:
+    with open(k_file, encoding='utf-8') as f:
         k_data = json.load(f)
-    with open(f'{e_file}', encoding='utf-8') as f:
+    with open(e_file, encoding='utf-8') as f:
         e_data = json.load(f)
-    # ML
+
     e_data = [classify_entropy_item(item) for item in e_data]
-    
+
     k_dict = {make_key(x): x for x in k_data}
     precise_list = precise_mode(r_file, k_file, e_file, True)
     result_med = []
@@ -216,31 +176,30 @@ def medium_mode(r_file, k_file, e_file, service=False):
         key = make_key(i)
         if key in k_dict:
             merged = {**i, **k_dict[key]}
-            merged['match'] += ['keywords','entropy']
+            merged['match'] = merged.get('match', []) + ['keywords', 'entropy']
             result_med.append(merged)
     result_d = {}
     for i in precise_list + result_med:
         key = make_key(i)
         result_d[key] = i
     result = list(result_d.values())
-    if service == False:
+    if not service:
         with open('./audit_json/medium_audit_result.json', 'w', encoding='utf-8') as f:
             json.dump(result, f, ensure_ascii=False, indent=4)
     else:
         return result
-    
+
 def agressivee_mode(r_file, k_file, e_file):
-    with open(f'{r_file}', encoding='utf-8') as f:
+    with open(r_file, encoding='utf-8') as f:
         r_data = json.load(f)
-    with open(f'{k_file}', encoding='utf-8') as f:
+    with open(k_file, encoding='utf-8') as f:
         k_data = json.load(f)
-    with open(f'{e_file}', encoding='utf-8') as f:
+    with open(e_file, encoding='utf-8') as f:
         e_data = json.load(f)
-    # ML
+
     e_data = [classify_entropy_item(item) for item in e_data]
     result_d = {}
-    seen = set()
-    
+
     for i in r_data:
         key = make_key(i)
         if key not in result_d:
@@ -259,24 +218,22 @@ def agressivee_mode(r_file, k_file, e_file):
         key = make_key(i)
         if key in result_d:
             result_d[key]['match'].append('keywords')
-    
+
     result = list(result_d.values())
     with open('./audit_json/agressive_audit_result.json', 'w', encoding='utf-8') as f:
-            json.dump(result, f, ensure_ascii=False, indent=4)
-    
-    
+        json.dump(result, f, ensure_ascii=False, indent=4)
 
 def search_leaks(direct, method):
     for root, dirs, files in os.walk(direct):
         for filename in files:
             path = os.path.join(root, filename)
             try:
-                with open(path, 'r', encoding='utf-8', errors='ignore') as file: # открывать файл в UTF-8
+                with open(path, 'r', encoding='utf-8', errors='ignore') as file:
                     num = 0
                     for line in file:
                         num += 1
                         line_stripped = line.strip()
-                        if not line_stripped:  
+                        if not line_stripped:
                             continue
 
                         if method == 'regex':
@@ -292,7 +249,7 @@ def search_leaks(direct, method):
                             dlp_result = analyze_line(line)
                             if not dlp_result.skip:
                                 logging(filename, num, line, dlp_result.leak_type, dlp_result.severity, None, method, 1)
-            except Exception as e: # пропускать бинарники и тд 
+            except Exception:
                 continue
 
 def scan(direct, mode):
@@ -303,9 +260,32 @@ def scan(direct, mode):
     r_file = './audit_json/regex_audit.json'
     k_file = './audit_json/keywords_audit.json'
     e_file = './audit_json/entropia_audit.json'
+
     if mode == 'precise':
         precise_mode(r_file, k_file, e_file)
-    if mode == 'medium':
+        result_file = './audit_json/precise_audit_result.json'
+    elif mode == 'medium':
         medium_mode(r_file, k_file, e_file)
-    if mode == 'agressive':
+        result_file = './audit_json/medium_audit_result.json'
+    elif mode == 'agressive':
         agressivee_mode(r_file, k_file, e_file)
+        result_file = './audit_json/agressive_audit_result.json'
+    else:
+        return []
+
+    with open(result_file, 'r', encoding='utf-8') as f:
+        return json.load(f)
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Scan files or directories for secrets.')
+    parser.add_argument('path', help='Path to file or directory to scan')
+    parser.add_argument('--mode', choices=['precise', 'medium', 'agressive'], default='agressive',
+                        help='Scan mode: precise, medium, or agressive (default: agressive)')
+    args = parser.parse_args()
+
+    results = scan(args.path, args.mode)
+    output_file = 'final_report.json'
+    with open(output_file, 'w', encoding='utf-8') as f:
+        json.dump(results, f, ensure_ascii=False, indent=4)
+    print(f"Scan completed. Found {len(results)} secrets. Report saved to {output_file}")
