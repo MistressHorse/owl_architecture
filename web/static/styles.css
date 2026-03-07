@@ -55,7 +55,7 @@ input[name="direct"] {
 
 input[name="direct"]:focus {
   box-shadow: 0 0 0 4px rgba(0,0,0,0.3); 
-
+}
 
 select[name="mode"] {
   position: absolute;
@@ -85,6 +85,7 @@ select[name="mode"] {
 
 select[name="mode"]:hover {
   background-color: #b0b0b0;     
+}
 
 select[name="mode"]:focus {
   outline: none;
