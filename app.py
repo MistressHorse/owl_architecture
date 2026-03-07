@@ -4,7 +4,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from typing import Annotated
 from python_multipart import *
-
+from scanner.main import scan as scanner_scan
 
 app = FastAPI()
 mode = None
