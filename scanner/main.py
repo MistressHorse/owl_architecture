@@ -8,17 +8,19 @@ import joblib
 import math
 from collections import Counter
 
-# Загрузка ML модели 
-MODEL_PATH = './type_classifier.pkl'
-CLASSES_PATH = './type_classes.pkl'
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+MODEL_PATH = os.path.join(BASE_DIR, 'ML', 'type_classifier.pkl')
+CLASSES_PATH = os.path.join(BASE_DIR, 'ML', 'type_classes.pkl')
+
 ml_model = None
 ml_classes = []
 try:
     ml_model = joblib.load(MODEL_PATH)
     ml_classes = joblib.load(CLASSES_PATH)
-    print("ML модель загружена. Классы:", ml_classes)
-except:
-    print("ML модель не найдена, классификация недоступна.")
+    print("ML модель загружена.")
+except Exception as e:
+    print("ML модель не найдена, классификация недоступна. Ошибка:", e)
 
 # Рекомендации 
 recommendation= { 
@@ -69,7 +71,7 @@ def extract_features(line):
         line = ""
     features = []
     features.append(len(line))
-    features.append(entropy(line))
+    features.append(calculate_entropy(line).entropy)
     upper = sum(1 for c in line if c.isupper())
     features.append(upper / max(1, len(line)))
     lower = sum(1 for c in line if c.islower())
@@ -262,24 +264,31 @@ def agressivee_mode(r_file, k_file, e_file):
 def search_leaks(direct, method):
     for root, dirs, files in os.walk(direct):
         for filename in files:
-            path = os.path.join(root,filename)
-            with open(path, 'r') as file:
-                num = 0
-                for line in file:
-                    num+=1
-                    if method == 'regex':
-                        dlp_base = RegexService('./rules.json')
-                        dlp_result = dlp_base.check_line(line)
-                        if not dlp_result.skip:
-                            logging(filename, num, line, dlp_result.log, dlp_result.imp, None, method)
-                    if method == 'entropia':
-                        dlp_result = calculate_entropy(line)
-                        if not dlp_result.skip:
-                            logging(filename, num, line, None, None, dlp_result.entropy, method)
-                    if method == 'keywords':
-                        dlp_result = analyze_line(line)
-                        if not dlp_result.skip:
-                            logging(filename, num, line, dlp_result.leak_type, dlp_result.severity, None, method, 1)
+            path = os.path.join(root, filename)
+            try:
+                with open(path, 'r', encoding='utf-8', errors='ignore') as file:
+                    num = 0
+                    for line in file:
+                        num += 1
+                        line_stripped = line.strip()
+                        if not line_stripped:  
+                            continue
+
+                        if method == 'regex':
+                            dlp_base = RegexService('./rules.json')
+                            dlp_result = dlp_base.check_line(line)
+                            if not dlp_result.skip:
+                                logging(filename, num, line, dlp_result.log, dlp_result.imp, None, method)
+                        elif method == 'entropia':
+                            dlp_result = calculate_entropy(line)
+                            if not dlp_result.skip:
+                                logging(filename, num, line, None, None, dlp_result.entropy, method)
+                        elif method == 'keywords':
+                            dlp_result = analyze_line(line)
+                            if not dlp_result.skip:
+                                logging(filename, num, line, dlp_result.leak_type, dlp_result.severity, None, method, 1)
+            except Exception as e:
+                continue
 
 def scan(direct, mode):
     clear_all_service_json()

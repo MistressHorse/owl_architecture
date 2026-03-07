@@ -6,7 +6,7 @@
         "log": "Bearer-token"},
 
         {"name": "aws-key-id",
-        "pattern": "AKIA.[^\\s]{36}",
+        "pattern": "AKIA.[^\\s]{26,50}",
         "importance": "HIGH",
         "log": "AWS Access Key ID"},
 
@@ -56,7 +56,7 @@
         "log": "SNILS"},
 
         {"name": "inn",
-        "pattern": "^(\\d{10}|\\d{12})$",
+        "pattern": "^\\d{3}-\\d{3}-\\d{3} \\d{2}$",
         "importance": "MEDIUM",
         "log": "INN"}
     ]
