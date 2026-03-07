@@ -11,16 +11,19 @@ from collections import Counter
 
 
 # Загрузка ML модели 
-MODEL_PATH = './ML/type_classifier.pkl'
-CLASSES_PATH = './ML/type_classes.pkl'
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+MODEL_PATH = os.path.join(BASE_DIR, 'ML', 'type_classifier.pkl')
+CLASSES_PATH = os.path.join(BASE_DIR, 'ML', 'type_classes.pkl')
+
 ml_model = None
 ml_classes = []
 try:
     ml_model = joblib.load(MODEL_PATH)
     ml_classes = joblib.load(CLASSES_PATH)
     print("ML модель загружена. Классы:", ml_classes)
-except:
-    print("ML модель не найдена, классификация недоступна.")
+except Exception as e:
+    print("ML модель не найдена, классификация недоступна. Ошибка:", e)
 
 # Рекомендации 
 recommendation= { 
