@@ -1,5 +1,5 @@
-# owl_architecture
-Запуск: 
+## owl_architecture
+# Запуск: 
 
 Склонируйте репозиторий:
 `git clone https://github.com/MistressHorse/owl_architecture.git`
